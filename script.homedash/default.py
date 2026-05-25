@@ -9,13 +9,16 @@ ADDON_PATH = ADDON.getAddonInfo("path")
 # Kodi does not add the addon's lib dir to sys.path for plain scripts, so do it.
 sys.path.append(os.path.join(ADDON_PATH, "resources", "lib"))
 
+import bins  # noqa: E402
 import feeds  # noqa: E402  (path appended above)
 
 LIST_ID = 100
+BIN_LABEL_ID = 200
 
 
 class Dashboard(xbmcgui.WindowXML):
     def onInit(self):
+        self._set_bin_line()
         lst = self.getControl(LIST_ID)
         lst.reset()
         items = []
@@ -27,6 +30,17 @@ class Dashboard(xbmcgui.WindowXML):
             items = [xbmcgui.ListItem("No items. Set feed URLs in addon settings.")]
         lst.addItems(items)
         self.setFocusId(LIST_ID)
+
+    def _set_bin_line(self):
+        # Best-effort: bin_url is per-device (addon settings), empty until set.
+        try:
+            line = bins.format_line(bins.next_collection(ADDON.getSetting("bin_url")))
+        except Exception:
+            line = ""
+        try:
+            self.getControl(BIN_LABEL_ID).setLabel(line)
+        except Exception:
+            pass  # label control absent in some skin tweak; non-fatal
 
     def onAction(self, action):
         # 9 parent, 10 previous menu, 92 nav-back: any of these closes the window.

@@ -1,3 +1,6 @@
 .DS_Store
 *.zip
 __pycache__/
+.env
+*.local.json
+secrets.py

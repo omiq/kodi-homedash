@@ -12,5 +12,18 @@
         </setting>
       </group>
     </category>
+    <category id="bins" label="Bins">
+      <group id="1">
+        <!-- Per-device only. Point at a pre-scrubbed bin-days JSON you host.
+             Never commit this value; it stays in this box's addon_data. -->
+        <setting id="bin_url" type="string" label="Bin days JSON URL">
+          <level>0</level>
+          <default></default>
+          <control type="edit" format="string">
+            <heading>Bin days JSON URL</heading>
+          </control>
+        </setting>
+      </group>
+    </category>
   </section>
 </settings>

@@ -26,9 +26,16 @@
             <texture colordiffuse="FFC1121F">white.png</texture>
         </control>
 
+        <!-- next bin (populated by default.py; blank until bin_url set) -->
+        <control type="label" id="200">
+            <left>80</left><top>132</top><width>1760</width><height>44</height>
+            <font>font13</font>
+            <textcolor>FFC1121F</textcolor>
+        </control>
+
         <!-- feed list -->
         <control type="list" id="100">
-            <left>80</left><top>150</top><width>1760</width><height>860</height>
+            <left>80</left><top>190</top><width>1760</width><height>820</height>
             <onleft>100</onleft>
             <onright>100</onright>
             <onup>100</onup>
