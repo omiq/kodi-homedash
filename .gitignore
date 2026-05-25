@@ -1,5 +1,7 @@
 .DS_Store
 *.zip
+# but the published repo zips must be tracked so Kodi can fetch them
+!repo/zips/**/*.zip
 __pycache__/
 .env
 *.local.json

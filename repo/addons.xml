@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+<addon id="script.homedash" name="Home Dashboard" version="0.4.0" provider-name="omiq">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py" start="startup"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Personal launchable home dashboard</summary>
+    <description lang="en_GB">A custom dashboard window for Kodi: RSS now, reminders and bin day later. Pure Python + one XML layout.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+  </extension>
+</addon>
+<addon id="repository.homedash" name="Home Dashboard Repository" version="1.0.0" provider-name="omiq">
+  <extension point="xbmc.addon.repository" name="Home Dashboard Repository">
+    <dir>
+      <info compressed="false">https://raw.githubusercontent.com/omiq/kodi-homedash/main/repo/addons.xml</info>
+      <checksum>https://raw.githubusercontent.com/omiq/kodi-homedash/main/repo/addons.xml.md5</checksum>
+      <datadir zip="true">https://raw.githubusercontent.com/omiq/kodi-homedash/main/repo/zips/</datadir>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Auto-update repository for Home Dashboard</summary>
+    <description lang="en_GB">Serves updates for the Home Dashboard add-on from the public GitHub repo. Install once, then updates arrive over the air.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+  </extension>
+</addon>
+</addons>

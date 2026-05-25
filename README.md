@@ -23,15 +23,41 @@ Addon lives in `script.homedash/`.
 - macOS: `~/Library/Application Support/Kodi/addons/`
 - Windows: `%APPDATA%\Kodi\addons\`
 
+## Over-the-air updates (recommended)
+
+Instead of shuffling zips, install the repository add-on once and let Kodi pull
+updates from this public repo.
+
+1. Install `repo/zips/repository.homedash/repository.homedash-1.0.0.zip` via
+   **Install from zip file** (Unknown sources must be enabled).
+2. Add-ons → **Install from repository** → Home Dashboard Repository → Program
+   add-ons → **Home Dashboard** → Install.
+
+After that, pushes to `main` update the box automatically (raw.githubusercontent
+has a short CDN cache, so allow a few minutes; or force via the repo's "Check
+for updates").
+
+### Cutting a release
+
+```bash
+# 1. bump <version> in script.homedash/addon.xml
+python3 make_repo.py          # regenerates repo/addons.xml(.md5) + zips
+git add -A && git commit -m "release script.homedash X.Y.Z" && git push
+```
+
+Kodi only updates when the version string increases, so the bump in step 1 is
+the part that's easy to forget.
+
 ## Run
 
 - Add-ons → Program add-ons → **Home Dashboard**, or
 - bind it anywhere with `RunScript(script.homedash)` (keymap, favourite, or a
   skin home-menu button).
 
-**Launch on startup:** put a `service.py`/autoexec calling `RunScript`, or add a
-favourite and set it as the startup action. (v0.1 is launch-on-demand; auto-open
-is a small follow-up.)
+**Launch on startup:** the bundled `service.py` opens the dashboard a few
+seconds after Kodi boots. Toggle it in add-on settings → **Startup** → "Open
+dashboard at Kodi startup". Backing out drops to the normal Kodi home, so it's a
+soft startup page, not a lock-in.
 
 ## Configure feeds
 
