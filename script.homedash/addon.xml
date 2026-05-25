@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="script.homedash" name="Home Dashboard" version="0.1.0" provider-name="omiq">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Personal launchable home dashboard</summary>
+    <description lang="en_GB">A custom dashboard window for Kodi: RSS now, reminders and bin day later. Pure Python + one XML layout.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+  </extension>
+</addon>

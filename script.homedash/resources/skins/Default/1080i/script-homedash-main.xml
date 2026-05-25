@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal dashboard layout. Fonts (font13 etc), textures (white.png) and
+  coordinates are skin-dependent in Kodi; expect to tweak these on the box.
+  white.png ships with nearly every skin and is tinted via colordiffuse for the
+  solid backgrounds.
+-->
+<window>
+    <defaultcontrol always="true">100</defaultcontrol>
+    <controls>
+        <!-- full-screen dark background -->
+        <control type="image">
+            <left>0</left><top>0</top><width>1920</width><height>1080</height>
+            <texture colordiffuse="FF0B0B12">white.png</texture>
+        </control>
+
+        <!-- title bar -->
+        <control type="label">
+            <left>80</left><top>48</top><width>1760</width><height>70</height>
+            <label>Home Dashboard  ·  News</label>
+            <font>font30</font>
+            <textcolor>FFFFFFFF</textcolor>
+        </control>
+        <control type="image">
+            <left>80</left><top>120</top><width>1760</width><height>3</height>
+            <texture colordiffuse="FFC1121F">white.png</texture>
+        </control>
+
+        <!-- feed list -->
+        <control type="list" id="100">
+            <left>80</left><top>150</top><width>1760</width><height>860</height>
+            <onleft>100</onleft>
+            <onright>100</onright>
+            <onup>100</onup>
+            <ondown>100</ondown>
+            <itemlayout height="78">
+                <control type="label">
+                    <left>24</left><top>0</top><width>1700</width><height>50</height>
+                    <label>$INFO[ListItem.Label]</label>
+                    <font>font13</font>
+                    <textcolor>FFEDEDED</textcolor>
+                </control>
+                <control type="label">
+                    <left>24</left><top>46</top><width>1700</width><height>28</height>
+                    <label>$INFO[ListItem.Label2]</label>
+                    <font>font12</font>
+                    <textcolor>FF8A8A8A</textcolor>
+                </control>
+            </itemlayout>
+            <focusedlayout height="78">
+                <control type="image">
+                    <left>0</left><top>0</top><width>1720</width><height>78</height>
+                    <texture colordiffuse="33C1121F">white.png</texture>
+                </control>
+                <control type="label">
+                    <left>24</left><top>0</top><width>1700</width><height>50</height>
+                    <label>$INFO[ListItem.Label]</label>
+                    <font>font13</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                </control>
+                <control type="label">
+                    <left>24</left><top>46</top><width>1700</width><height>28</height>
+                    <label>$INFO[ListItem.Label2]</label>
+                    <font>font12</font>
+                    <textcolor>FFB9B9B9</textcolor>
+                </control>
+            </focusedlayout>
+        </control>
+    </controls>
+</window>

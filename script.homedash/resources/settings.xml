@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings version="1">
+  <section id="script.homedash">
+    <category id="general" label="Feeds">
+      <group id="1">
+        <setting id="feeds" type="string" label="Feed URLs (comma or newline separated)">
+          <level>0</level>
+          <default>https://retrogamecoders.com/feed/</default>
+          <control type="edit" format="string">
+            <heading>Feed URLs</heading>
+          </control>
+        </setting>
+      </group>
+    </category>
+  </section>
+</settings>
