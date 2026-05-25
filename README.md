@@ -5,28 +5,40 @@ layout, not tied to a skin. v0.1 shows RSS; reminders and bin day come next.
 
 Addon lives in `script.homedash/`.
 
-## Install
+## Install / update (LibreELEC box — primary method)
 
-**Easiest (works on any Kodi, incl. Android TV / LibreELEC):**
-1. Zip the addon folder so the zip contains `script.homedash/` at its root:
-   ```bash
-   cd ~/github/kodi-homedash
-   zip -r script.homedash.zip script.homedash
-   ```
-2. Copy the zip to the box (USB / network share / `scp`).
-3. Kodi → Settings → System → Add-ons → enable **Unknown sources**.
-4. Kodi → Add-ons → **Install from zip file** → pick `script.homedash.zip`.
+SSH deploy. No zips, no repo add-on. This is what the home Pi uses.
 
-**Or copy the folder directly** into Kodi's addons dir (then restart Kodi):
-- LibreELEC / CoreELEC: `/storage/.kodi/addons/`
-- Linux: `~/.kodi/addons/`
-- macOS: `~/Library/Application Support/Kodi/addons/`
-- Windows: `%APPDATA%\Kodi\addons\`
+One-time: enable SSH on the box, copy your key:
+```bash
+ssh-copy-id root@<box-ip>     # LibreELEC user is root; default pass libreelec
+```
+Then, from this repo:
+```bash
+./deploy.sh                   # rsync code in; relaunch the add-on to see it
+./deploy.sh --restart         # rsync + restart Kodi (needed for addon.xml /
+                              # service / extension-point changes)
+KODI_HOST=root@1.2.3.4 ./deploy.sh   # override the host
+```
 
-## Over-the-air updates (recommended)
+Why not "Install from zip" from a URL? **Kodi reads a zip over HTTP with byte-range
+requests, and Python's `http.server` ignores `Range`** — so a locally-served zip
+fails with `Error getting zip://...`. Don't serve install zips with `http.server`;
+either deploy over SSH (above) or use a host that honours Range (GitHub raw does).
 
-Instead of shuffling zips, install the repository add-on once and let Kodi pull
-updates from this public repo.
+**Plain manual install** (any Kodi: Android TV, Windows, etc.):
+1. `zip -r script.homedash.zip script.homedash` (zip must hold `script.homedash/` at root).
+2. Copy to the box (USB / share / `scp`), enable **Unknown sources**.
+3. Kodi → Add-ons → **Install from zip file** → pick it.
+Addons dirs: LibreELEC/CoreELEC `/storage/.kodi/addons/`, Linux `~/.kodi/addons/`,
+macOS `~/Library/Application Support/Kodi/addons/`, Windows `%APPDATA%\Kodi\addons\`.
+
+## Over-the-air updates (optional, for boxes you can't SSH to)
+
+The SSH deploy above is simpler for the home Pi. But if you want hands-off OTA
+(e.g. a box elsewhere), install the repository add-on once and Kodi pulls updates
+from this public repo. This works because GitHub raw honours Range requests (a
+local `http.server` does not — see the install note above).
 
 1. Install `repo/zips/repository.homedash/repository.homedash-1.0.0.zip` via
    **Install from zip file** (Unknown sources must be enabled).
