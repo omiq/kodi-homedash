@@ -1,8 +1,13 @@
 """RSS/Atom fetching with the stdlib only (no external addon deps to install on
 the Kodi box). Handles both RSS <item> and Atom <entry> by matching local tag
 names, which sidesteps namespace handling."""
+import html
+import re
 import urllib.request
 import xml.etree.ElementTree as ET
+
+_TAG = re.compile(r"<[^>]+>")
+_WS = re.compile(r"[ \t]*\n[ \t]*")
 
 DEFAULT_FEEDS = ["https://retrogamecoders.com/feed/"]
 USER_AGENT = "KodiHomeDash/0.1"
@@ -29,6 +34,21 @@ def _text(el) -> str:
     return (el.text or "").strip() if el is not None else ""
 
 
+def _strip_html(raw: str) -> str:
+    """Feed bodies are HTML; flatten to readable plain text for the viewer."""
+    text = html.unescape(_TAG.sub("", raw))
+    text = _WS.sub("\n", text)
+    return "\n".join(line.strip() for line in text.splitlines()).strip()
+
+
+def _link(el) -> str:
+    """RSS <link> holds the URL as text; Atom <link> holds it in href."""
+    link = _child(el, "link")
+    if link is None:
+        return ""
+    return _text(link) or link.get("href", "")
+
+
 def _parse(url: str, limit: int, source: str) -> list[dict]:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=10) as r:
@@ -45,8 +65,20 @@ def _parse(url: str, limit: int, source: str) -> list[dict]:
             if d is not None:
                 date = _text(d)
                 break
+        body = ""
+        for key in ("description", "summary", "content", "encoded"):
+            b = _child(el, key)
+            if b is not None and _text(b):
+                body = _strip_html(_text(b))
+                break
         if title:
-            out.append({"title": title, "source": source, "date": date[:25]})
+            out.append({
+                "title": title,
+                "source": source,
+                "date": date[:25],
+                "body": body,
+                "link": _link(el),
+            })
         if len(out) >= limit:
             break
     return out

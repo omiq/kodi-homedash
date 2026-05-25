@@ -21,8 +21,9 @@ class Dashboard(xbmcgui.WindowXML):
         self._set_bin_line()
         lst = self.getControl(LIST_ID)
         lst.reset()
+        self._entries = feeds.fetch_all(feeds.configured_feeds(ADDON))
         items = []
-        for e in feeds.fetch_all(feeds.configured_feeds(ADDON)):
+        for e in self._entries:
             li = xbmcgui.ListItem(e["title"])
             li.setLabel2(f"{e['source']}   {e['date']}")
             items.append(li)
@@ -30,6 +31,19 @@ class Dashboard(xbmcgui.WindowXML):
             items = [xbmcgui.ListItem("No items. Set feed URLs in addon settings.")]
         lst.addItems(items)
         self.setFocusId(LIST_ID)
+
+    def onClick(self, control_id):
+        if control_id != LIST_ID or not getattr(self, "_entries", None):
+            return
+        pos = self.getControl(LIST_ID).getSelectedPosition()
+        if not 0 <= pos < len(self._entries):
+            return
+        e = self._entries[pos]
+        body = e.get("body") or "(no summary in feed)"
+        link = e.get("link")
+        if link:
+            body = f"{body}\n\n{link}"
+        xbmcgui.Dialog().textviewer(e["title"], body)
 
     def _set_bin_line(self):
         # Best-effort: bin_url is per-device (addon settings), empty until set.
